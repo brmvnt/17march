@@ -1,0 +1,64 @@
+#include <iostream>
+#include <ctime> 
+#include <cstdlib> 
+using namespace std;
+
+// Реализация быстрой сортировки с рекурсией в отдельной функции
+void quicksort(int* list, int left, int right) {
+	int i = left; // Индекс первого элемента массива
+	int j = right; // Индекс последнего элемента массива
+	int mid = list[(left + right) / 2]; // Серединный элемент
+	
+	while (i <= j) {
+
+		while (list[i] < mid) { // Поиск индекса элемента, который больше, чем серединный
+			i++;
+		}
+		while (list[j] > mid) { // Поиск индекса элемента, который меньше, чем серединный
+			j--;
+		}
+		if (i <= j) { // Перемещение элементов
+			int t = list[i];
+			list[i] = list[j];
+			list[j] = t;
+			i++;
+			j--;
+		}
+	}
+
+	// Рекурсивный вызов
+	while (i <= j) {
+		if (left < j) {
+			quicksort(list, left, j);
+		}
+		if (i < right) {
+			quicksort(list, i, right);
+		}
+	}
+
+}
+
+int main() {
+	setlocale(LC_ALL, "rus");
+	srand(time(NULL));
+	const int n = 8; // Количество элементов
+	int list[n] = { 0 }; // Инициализация массива
+	for (int i = 0; i < n; i++) { // Заполнение
+		list[i] = rand() % 201 - 100; // Заполнение числами от -100 до 100
+	}
+	cout << "Начальный массив: ";
+	for (int i = 0; i < n; i++) { // Вывод неотсортированного массива
+		cout << list[i] << " ";
+	}
+	cout << endl;
+
+	int left = 0; int right = n - 1;
+
+	// Быстрая сортировка
+	quicksort(list, left, right); // Вызов функции быстрой сортировки
+
+	cout << "Конечный массив: ";
+	for (int i = 0; i < n; i++) { // Вывод отсортированного массива
+		cout << list[i] << " ";
+	}
+}
