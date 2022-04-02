@@ -1,0 +1,59 @@
+#include <iostream>
+#include <ctime> 
+#include <cstdlib> 
+using namespace std;
+
+int main() {
+	setlocale(LC_ALL, "rus");
+	srand(time(NULL));
+	const int n = 8; // Количество элементов
+	int list[n] = { 0 }; // Инициализация массива
+	for (int i = 0; i < n; i++) { // Заполнение
+		list[i] = rand() % 201 - 100; // Заполнение числами от -100 до 100
+	}
+	cout << "Начальный массив: ";
+	for (int i = 0; i < n; i++) { // Вывод неотсортированного массива
+		cout << list[i] << " ";
+	}
+	cout << endl;
+
+	// Пирамидальная сортировка
+	int place = 0; // Смещение
+	bool key = false;
+	while (place + 2 != n) {
+		key = false;
+        for (int i = 0; i < n; i++) {
+            if (i * 2 + 2 + place < n) {
+                if ((list[i + place] > list[i * 2 + 1 + place]) || (list[i + place] >  list[i * 2 + 2 + place])) {
+                    if (list[i * 2 + 1 + place] <  list[i * 2 + 2 + place]) {
+                        swap(list[i + place], list[i * 2 + 1 + place]);
+                        key = true;
+                    }
+                    else if (list[i * 2 + 2 + place] < list[i * 2 + 1 + place]) {
+                        swap(list[i + place], list[i * 2 + 2 + place]);
+                        key = true;
+                    }
+                }
+                if (list[i * 2 + 2 + place] < list[i * 2 + 1 + place]) // Доп. проверка
+                {
+                    swap(list[i * 2 + 1 + place], list[i * 2 + 2 + place]);
+                    key = true;
+                }
+            }
+            else if (i * 2 + 1 + place < n) {
+                if (list[i + place] > list[i * 2 + 1 + place]) {
+                    swap(list[i + place], list[i * 2 + 1 + place]);
+                    key = true;
+                }
+            }
+        }
+        if (!key) { // Увеличение смещения
+            place++;
+        } 
+    }
+
+	cout << "Конечный массив: ";
+	for (int i = 0; i < n; i++) { // Вывод отсортированного массива
+		cout << list[i] << " ";
+	}
+}
